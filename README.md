@@ -118,11 +118,11 @@ sequenceDiagram
 
 | Subsystem | Location | Stack | Description |
 | :--- | :--- | :--- | :--- |
-| **MCP Reference Server** | [`server/`](./server) | Node.js, Express, TypeScript | Exposes tools, resources, and real-time SSE push endpoints |
-| **MCP Client** | [`client/`](./client) | TypeScript, Anthropic SDK | Discovers, negotiates, and executes tool calls using Claude API |
-| **Product Specs (PRD)** | [`PRD.md`](./PRD.md) | Markdown | Product Requirements Document outlining functional tiers |
-| **Technical Specs (TRD)** | [`TRD.md`](./TRD.md) | Markdown | Technical Requirements Document covering protocol specs |
-| **Architecture (Overview)** | [`Project_Overview.md`](./Project_Overview.md) | Markdown | Comprehensive overview of system components and scope |
+| **MCP Reference Server** | [`mcp-notes-project/server/`](./mcp-notes-project/server) | Node.js, Express, TypeScript | Exposes tools, resources, and real-time SSE push endpoints |
+| **MCP Client** | [`mcp-notes-project/client/`](./mcp-notes-project/client) | TypeScript, Anthropic SDK | Discovers, negotiates, and executes tool calls using Claude API |
+| **Product Specs (PRD)** | [`mcp-notes-project/PRD.md`](./mcp-notes-project/PRD.md) | Markdown | Product Requirements Document outlining functional tiers |
+| **Technical Specs (TRD)** | [`mcp-notes-project/TRD.md`](./mcp-notes-project/TRD.md) | Markdown | Technical Requirements Document covering protocol specs |
+| **Architecture (Overview)** | [`mcp-notes-project/Project_Overview.md`](./mcp-notes-project/Project_Overview.md) | Markdown | Comprehensive overview of system components and scope |
 
 ---
 
