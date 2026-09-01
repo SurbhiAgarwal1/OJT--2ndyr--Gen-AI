@@ -16,7 +16,7 @@ A production-grade, enterprise reference implementation of Anthropic's **Model C
 - **Track**: AI/LLM Engineering & Protocol Design
 - **Domain**: Developer Infrastructure / Distributed Agent Systems
 - **Timeline**: 6–8 Weeks
-- **Stack**: TypeScript / Python · Official Anthropic MCP SDK
+- **Stack**: Langchain, Python · Official Anthropic MCP SDK
 - **Version**: `1.0.0` (September 2026)
 
 ---
@@ -177,16 +177,6 @@ npm start
 - **Week 6**: Multi-Server Aggregator Proxy Engine
 - **Week 7**: SSE Live Subscriptions & Real-Time Push Events
 - **Week 8**: Protocol Conformance Testing, Documentation & Final Demo
-
----
-
-## 🤝 Contributing
-
-1. Fork the Repository.
-2. Create your Feature Branch (`git checkout -b Surbhi-Agarwal`).
-3. Commit your changes with DCO sign-off (`git commit -s -m "feat: add SSE adapter"`).
-4. Push to the branch (`git push origin Surbhi-Agarwal`).
-5. Open a Pull Request.
 
 ---
 
