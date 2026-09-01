@@ -144,36 +144,6 @@ sequenceDiagram
 
 ---
 
-## 🗓️ Complete 12-Week Implementation Roadmap
-
-```text
-W1-W2: Foundation & Core MCP Server
- ├── W1: Repository setup with Official MCP SDK (@modelcontextprotocol/sdk) & TypeScript scaffolding.
- └── W2: Build MCP Server exposing tools and dynamic resources with strict Zod schema validation.
-
-W3-W4: MCP Client & Tool Execution MVP
- ├── W3: Implement MCP Client capable of dynamic capability discovery and session handling.
- └── W4: Deliver initial end-to-end tool execution MVP integrated with Claude API.
-
-W5-W6: Transport, Subscriptions & Security Scoping
- ├── W5: Implement dual transport support (stdio + HTTP/SSE adapters).
- └── W6: Build resource subscription engine (server push updates) and per-client JWT permission scoping.
-
-W7-W8: Multi-Server Aggregator & Adversarial Testing
- ├── W7: Build Multi-Server Aggregator layer proxying multiple downstream tool servers into one session.
- └── W8: Execute performance benchmarking and chaos/adversarial stress testing.
-
-W9-W10: Web Inspector Playground & Monitoring
- ├── W9: Build interactive Web Playground UI with live protocol message inspector.
- └── W10: Integrate Prometheus latency/throughput monitoring and metric dashboards.
-
-W11-W12: Conformance Suite, Package Publication & Live Demo
- ├── W11: Implement protocol conformance test suite and prepare npm/PyPI package publication.
- └── W12: Publish architecture spec documentation, finalize production build, and record demo video.
-```
-
----
-
 ## 📁 Repository Structure
 
 ```text
@@ -184,8 +154,7 @@ Agent-to-Agent-MCP-/
 │   ├── PRD.md                   # Product Requirements Document
 │   ├── TRD.md                   # Technical Requirements Document
 │   ├── Project_Overview.md      # High-Level Architecture Overview
-│   └── README.md                # Component Guide
-├── plan.md                      # Implementation Progress Tracker
+│   └── README.md                # Component Guide               
 └── README.md                    # Master Project Documentation
 ```
 
