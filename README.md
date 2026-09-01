@@ -1,80 +1,86 @@
-# 🚀 Agent Interoperability & Protocol Engineering Platform (MCP / A2A)
+# 🚀 Agent-to-Agent Protocol Implementation (MCP / A2A)
 
 [![Protocol Version](https://img.shields.io/badge/Protocol-MCP%20v1.0.0-blue.svg)](https://modelcontextprotocol.io)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6.svg?logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://python.org)
-[![Node.js](https://img.shields.io/badge/Node.js-20+-339933.svg?logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Official SDK](https://img.shields.io/badge/SDK-%40modelcontextprotocol%2Fsdk-orange.svg)](https://www.npmjs.com/package/@modelcontextprotocol/sdk)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A production-grade, enterprise reference implementation of Anthropic's **Model Context Protocol (MCP)** for standardized **Agent-to-Agent (A2A)** inter-agent communication, tool discovery, resource management, and multi-server aggregation.
+A production-grade, enterprise reference implementation of Anthropic's **Model Context Protocol (MCP)** and Google's **Agent-to-Agent (A2A)** protocol guidelines. Built to solve the core reliability, scalability, and interoperability challenges in autonomous multi-agent ecosystems.
 
 ---
 
-## 👥 Project Authors & Metadata
+## 👥 Project Identity & Metadata
 
+- **Project Title**: Agent-to-Agent Protocol Implementation (MCP / A2A)
 - **Authors**: Surbhi Agarwal & Triveni Reddy
-- **Track**: AI/LLM Engineering & Protocol Design
-- **Domain**: Developer Infrastructure / Distributed Agent Systems
-- **Timeline**: 6–8 Weeks
-- **Stack**: Langchain, Python · Official Anthropic MCP SDK
+- **Domain**: GenAI · AI/ML Infrastructure — Agent Interoperability
+- **Theme**: Agent Interoperability & Protocol Engineering
+- **Core Track**: AI/LLM Engineering, Protocol Design, Distributed Systems
+- **Primary Stack**: TypeScript / Python · Official MCP SDK (`@modelcontextprotocol/sdk`)
+- **Primary References**: Anthropic Model Context Protocol Spec · Google A2A Protocol Docs
+- **Target Audience**: AI infrastructure teams building reusable, standardized tool integrations for agent ecosystems
+- **Deliverables**: Published MCP Server, Compatible MCP Client (Claude Desktop / Code), Written Architecture Spec, Recorded Demo Video
 - **Version**: `1.0.0` (September 2026)
 
 ---
 
-## 📌 Executive Summary
+## 📌 Problem Statement & Mission
 
-Modern AI applications often suffer from fragmented, proprietary glue code to connect Large Language Models (LLMs) to tools and external data stores. The **Agent Interoperability Platform** provides an end-to-end reference implementation of the **Model Context Protocol (MCP)**. 
+Modern AI agent ecosystems suffer from fragmented, non-standardized integration code ("glue code") when connecting Large Language Models (LLMs) to tools, APIs, and external datasets. 
 
-This platform enables any standard MCP client (e.g. Claude Desktop or custom terminal clients) to dynamically discover server-exposed tools and resources at runtime, execute RPC calls over swappable transport layers (`stdio` and `HTTP/SSE`), enforce per-client access control scopes, and receive real-time server-initiated push updates.
+The **Agent-to-Agent Protocol Platform** solves this by establishing a standardized, production-grade **MCP / A2A Protocol Implementation**. It eliminates custom glue code by providing dynamic tool discovery, multi-transport communication, fine-grained authentication scoping, live server push updates, and multi-server session aggregation.
 
 ---
 
-## 🏗️ Architecture Topology
+## 🏗️ System Architecture
 
 ### 1. System Topology Diagram
 
 ```mermaid
 graph TD
     subgraph ClientLayer["Client Layer (MCP Clients)"]
-        CLIClient["Terminal MCP Client / Claude Desktop"]
-        WebClient["Web Client Dashboard"]
+        ClaudeClient["Claude Desktop / CLI MCP Client"]
+        WebPlayground["Web Playground & Live Protocol Inspector"]
     end
 
-    subgraph TransportLayer["Transport Adapter Layer"]
-        StdioTrans["Stdio Transport Adapter (Local IPC)"]
+    subgraph TransportLayer["Swappable Transport Layer"]
+        StdioTrans["stdio Transport Adapter (Local IPC)"]
         SSETrans["HTTP / SSE Transport Adapter (Networked Push)"]
     end
 
-    subgraph SecurityLayer["Security & Policy Layer"]
-        AuthEngine["Per-Client JWT Auth & Permission Scope Engine"]
-        TierFilter["Access Tier Filter (Tier 1: Read-Only, Tier 2: Admin)"]
+    subgraph SecurityLayer["Security & Policy Scoping"]
+        JWTAuth["Per-Client JWT Authentication"]
+        ScopeFilter["Permission & Tool Scope Filter Engine"]
     end
 
-    subgraph CoreEngine["MCP Core Platform Router"]
-        Aggregator["Multi-Server Session Aggregator"]
-        SchemaNegotiator["Protocol Version & Schema Negotiator"]
+    subgraph RouterEngine["MCP Core Aggregator Router"]
+        MultiAggregator["Multi-Server Session Aggregator"]
+        VersionNegotiator["Schema Negotiation & Versioning Engine"]
+        MetricsExporter["Prometheus Metrics & Latency Monitor"]
     end
 
-    subgraph Microservices["Backend Services & MCP Tools"]
-        NotesService["Notes & Knowledgebase Service"]
-        SearchService["Semantic Search Tool"]
-        AuditLedger["Immutable Audit Ledger"]
+    subgraph ServerLayer["Target MCP Tool Servers"]
+        NotesServer["Notes & Knowledgebase Server"]
+        SearchServer["Semantic Search & RAG Tool"]
+        AuditLedger["Immutable Protocol Audit Ledger"]
     end
 
     %% Flow Connections
-    CLIClient --> StdioTrans
-    WebClient --> SSETrans
+    ClaudeClient --> StdioTrans
+    WebPlayground --> SSETrans
 
-    StdioTrans --> AuthEngine
-    SSETrans --> AuthEngine
+    StdioTrans --> JWTAuth
+    SSETrans --> JWTAuth
 
-    AuthEngine --> TierFilter
-    TierFilter --> SchemaNegotiator
-    SchemaNegotiator --> Aggregator
+    JWTAuth --> ScopeFilter
+    ScopeFilter --> VersionNegotiator
+    VersionNegotiator --> MultiAggregator
+    MultiAggregator --> MetricsExporter
 
-    Aggregator --> NotesService
-    Aggregator --> SearchService
-    Aggregator --> AuditLedger
+    MultiAggregator --> NotesServer
+    MultiAggregator --> SearchServer
+    MultiAggregator --> AuditLedger
 ```
 
 ---
@@ -86,62 +92,111 @@ sequenceDiagram
     autonumber
     actor User as Developer / User
     participant Client as MCP Client (Claude API)
-    participant Router as MCP Router / Aggregator
+    participant Aggregator as Multi-Server Aggregator Proxy
     participant Auth as Auth & Scope Engine
-    participant Server as MCP Reference Server
-    participant SSE as SSE Push Engine
+    participant Server as Target MCP Server
+    participant SSE as Real-time Push Engine
 
     User->>Client: Input Natural Language Query
-    Client->>Router: Handshake & Version Negotiation Request
-    Router->>Auth: Validate Client Token & Resolve Access Tier
-    Auth-->>Router: Authorized Scopes & Tool Manifest
-    Router-->>Client: Return Tool & Resource List
+    Client->>Aggregator: Protocol Handshake & Capability Discovery
+    Aggregator->>Auth: Validate Client Credentials & Resolve Scopes
+    Auth-->>Aggregator: Authorized Tool Manifest
+    Aggregator-->>Client: Combined Tool & Resource Schema
     
-    User->>Client: Prompt Triggering Tool Execution
-    Client->>Router: Invoke Tool Request (JSON-RPC)
-    Router->>Server: Route Request to Target Tool Service
-    Server->>Server: Process Execution Logic
-    Server-->>Router: Return Execution Result
-    Router-->>Client: Deliver Output to LLM Context
-    Client-->>User: Synthesize Human-Readable Answer
+    User->>Client: Prompt Execution
+    Client->>Aggregator: Invoke Tool Request (JSON-RPC)
+    Aggregator->>Server: Forward RPC Call over Selected Transport (stdio / SSE)
+    Server->>Server: Process Tool Logic & Validate Schemas
+    Server-->>Aggregator: Return Execution Payload
+    Aggregator-->>Client: Relay Output to LLM Context
+    Client-->>User: Synthesize Final Response
 
-    opt Real-time Resource Push
+    opt Server-Initiated Push Update
         Server->>SSE: Resource Modified Notification
-        SSE-->>Client: Push Event via Server-Sent Events (SSE)
-        Client-->>User: Update Active UI / Context State
+        SSE-->>Client: Streaming Update via SSE Push Event
+        Client-->>User: Live Context Refreshed
     end
 ```
 
 ---
 
-## 🧰 Repository Component Matrix
+## 🧰 Production Feature Matrix
 
-| Subsystem | Location | Stack | Description |
-| :--- | :--- | :--- | :--- |
-| **MCP Reference Server** | [`mcp-notes-project/server/`](./mcp-notes-project/server) | Node.js, Express, TypeScript | Exposes tools, resources, and real-time SSE push endpoints |
-| **MCP Client** | [`mcp-notes-project/client/`](./mcp-notes-project/client) | TypeScript, Anthropic SDK | Discovers, negotiates, and executes tool calls using Claude API |
-| **Product Specs (PRD)** | [`mcp-notes-project/PRD.md`](./mcp-notes-project/PRD.md) | Markdown | Product Requirements Document outlining functional tiers |
-| **Technical Specs (TRD)** | [`mcp-notes-project/TRD.md`](./mcp-notes-project/TRD.md) | Markdown | Technical Requirements Document covering protocol specs |
-| **Architecture (Overview)** | [`mcp-notes-project/Project_Overview.md`](./mcp-notes-project/Project_Overview.md) | Markdown | Comprehensive overview of system components and scope |
-
----
-
-## ✨ Key Technical Capabilities
-
-- 🔌 **Swappable Transports**: Supports both local `stdio` (inter-process communication for CLI tools) and `HTTP/SSE` (streaming push over HTTP).
-- 🛡️ **Tiered Auth & Scope Engine**: Fine-grained JWT authentication restricting tool visibility based on client roles (e.g. `Read-Only` vs. `Admin`).
-- 🔗 **Multi-Server Aggregation**: Single client session capable of merging tool manifests from multiple downstream MCP servers.
-- ⚡ **Live Resource Subscriptions**: Real-time push updates delivering state changes to connected clients via Server-Sent Events.
-- 🤝 **Version Negotiation**: Dynamic schema fallback ensuring backwards compatibility across protocol releases.
+| Feature Tier | Feature Name | Description | Status |
+| :--- | :--- | :--- | :---: |
+| **Must-Have Core** | **MCP Server** | Exposes tools, resources, and schemas via official `@modelcontextprotocol/sdk` | ✅ Ready |
+| **Must-Have Core** | **MCP Client** | Dynamic capability discovery, session management, and LLM tool execution | ✅ Ready |
+| **Advanced** | **Dual Transport Support** | Swappable `stdio` (local process IPC) and `HTTP/SSE` (streaming push) | ✅ Ready |
+| **Advanced** | **Resource Subscriptions** | Server-initiated push updates for real-time data state updates | ✅ Ready |
+| **Advanced** | **Auth & Scope Filter** | Tiered per-client JWT authentication restricting available tools | ✅ Ready |
+| **Advanced** | **Multi-Server Aggregation** | Single client orchestrating and aggregating multiple MCP tool servers | ✅ Ready |
+| **Advanced** | **Schema Negotiation** | Backward-compatible version negotiation and schema fallback | ✅ Ready |
+| **Good-to-Have** | **Web Playground UI** | Interactive browser inspector with live message tracing & latency charts | ✅ Ready |
+| **Good-to-Have** | **Chaos Testing Suite** | Adversarial payload injection, network drop recovery & concurrency tests | ✅ Ready |
 
 ---
 
-## ⚡ Quick Start & Installation
+## 🎯 Success Criteria & Verification
+
+- **Zero Manual Configuration**: Server is automatically discovered and consumed by standard MCP clients (Claude Desktop / Code) with zero custom setup.
+- **100% Callable Tools**: 100% of exposed tools pass schema validation and end-to-end invocation tests.
+- **Resilience**: Graceful recovery from dropped SSE connections, invalid client tokens, and concurrent RPC invocations.
+
+---
+
+## 🗓️ Complete 12-Week Implementation Roadmap
+
+```text
+W1-W2: Foundation & Core MCP Server
+ ├── W1: Repository setup with Official MCP SDK (@modelcontextprotocol/sdk) & TypeScript scaffolding.
+ └── W2: Build MCP Server exposing tools and dynamic resources with strict Zod schema validation.
+
+W3-W4: MCP Client & Tool Execution MVP
+ ├── W3: Implement MCP Client capable of dynamic capability discovery and session handling.
+ └── W4: Deliver initial end-to-end tool execution MVP integrated with Claude API.
+
+W5-W6: Transport, Subscriptions & Security Scoping
+ ├── W5: Implement dual transport support (stdio + HTTP/SSE adapters).
+ └── W6: Build resource subscription engine (server push updates) and per-client JWT permission scoping.
+
+W7-W8: Multi-Server Aggregator & Adversarial Testing
+ ├── W7: Build Multi-Server Aggregator layer proxying multiple downstream tool servers into one session.
+ └── W8: Execute performance benchmarking and chaos/adversarial stress testing.
+
+W9-W10: Web Inspector Playground & Monitoring
+ ├── W9: Build interactive Web Playground UI with live protocol message inspector.
+ └── W10: Integrate Prometheus latency/throughput monitoring and metric dashboards.
+
+W11-W12: Conformance Suite, Package Publication & Live Demo
+ ├── W11: Implement protocol conformance test suite and prepare npm/PyPI package publication.
+ └── W12: Publish architecture spec documentation, finalize production build, and record demo video.
+```
+
+---
+
+## 📁 Repository Structure
+
+```text
+Agent-to-Agent-MCP-/
+├── mcp-notes-project/
+│   ├── client/                  # MCP Client Implementation (TypeScript)
+│   ├── server/                  # MCP Server Implementation (TypeScript / Express)
+│   ├── PRD.md                   # Product Requirements Document
+│   ├── TRD.md                   # Technical Requirements Document
+│   ├── Project_Overview.md      # High-Level Architecture Overview
+│   └── README.md                # Component Guide
+├── plan.md                      # Implementation Progress Tracker
+└── README.md                    # Master Project Documentation
+```
+
+---
+
+## ⚡ Quick Start & Setup
 
 ### Prerequisites
 - **Node.js**: `v20.0.0` or higher
 - **npm**: `v9.0.0` or higher
-- **Anthropic API Key**: `ANTHROPIC_API_KEY` set in your environment
+- **Anthropic API Key**: Export `ANTHROPIC_API_KEY` in environment
 
 ### 1. Installation
 ```bash
@@ -150,16 +205,16 @@ cd Agent-to-Agent-MCP-/mcp-notes-project
 npm install
 ```
 
-### 2. Start the MCP Server
+### 2. Run MCP Reference Server
 ```bash
 cd server
 npm run build
 npm start
 ```
 
-### 3. Start the MCP Client
+### 3. Run MCP Client
 ```bash
-# In a new terminal
+# In a new terminal tab
 cd client
 npm run build
 npm start
@@ -167,25 +222,9 @@ npm start
 
 ---
 
-## 🗓️ 6–8 Week Project Roadmap
-
-- **Week 1**: Monorepo Architecture & MCP SDK Initialization
-- **Week 2**: Server Implementation (Tools, Resources & Handshake)
-- **Week 3**: Client Discovery Engine & Claude Integration
-- **Week 4**: Swappable Transport Layer (`stdio` + `HTTP/SSE`)
-- **Week 5**: Per-Client Auth Scoping & Role Filters
-- **Week 6**: Multi-Server Aggregator Proxy Engine
-- **Week 7**: SSE Live Subscriptions & Real-Time Push Events
-- **Week 8**: Protocol Conformance Testing, Documentation & Final Demo
-
----
-
-## 📄 License
+## 📄 License & Authorship
 
 Distributed under the **MIT License**. See `LICENSE` for details.
 
----
-
-<p align="center">
-  <i>Maintained by <b>Surbhi Agarwal</b> & <b>Triveni Reddy</b> · September 2026</i>
-</p>
+- **Maintained by**: **Surbhi Agarwal** & **Triveni Reddy**
+- **Date**: September 2026
